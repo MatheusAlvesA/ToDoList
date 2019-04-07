@@ -1,0 +1,14 @@
+body {
+	padding-top: 5rem;
+}
+
+.nomeProjeto {
+	border-bottom: 1px solid gray;
+	text-align: right;
+}
+
+.containerProjeto {
+	background-color: #ececec;
+	padding: 5px;
+	border-radius: 5px;
+}
