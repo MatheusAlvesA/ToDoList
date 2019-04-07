@@ -17,7 +17,7 @@
       <b class="navbar-brand">Todo List</b>
        <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-        	<button type="button" class="btn btn-outline-primary">Nova tarefa</button>
+        	<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#criarModal">Nova tarefa</button>
         </li>
        </ul>
     </nav>
@@ -25,12 +25,65 @@
     <main role="main" class="container-fluid">
 
       <div class="row">
-      	<div id="root" class="col-10 offset-1">
+      	<div id="root" class="col-12 col-md-10 offset-md-1">
       		<!-- Renderizado via Javascript -->
         </div>
       </div>
 
-    </main>
+	</main>
+	
+	<div class="modal fade" id="criarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title">Inserir nova tarefa</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<form>
+						<div class="form-group row">
+						  <label for="insertNomeProjeto" class="col-sm-5 col-form-label col-form-label-lg">Nome Projeto:</label>
+						  <div class="col-sm-7">
+							<input type="text" class="form-control form-control-lg" id="insertNomeProjeto" />
+						  </div>
+						</div>
+						<div class="form-group row">
+							<label for="insertTituloTarefa" class="col-sm-4 col-form-label">Título da Tarefa:</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="insertTituloTarefa" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="insertResponsavel" class="col-sm-4 col-form-label">Responsável:</label>
+							<div class="col-sm-8">
+							  <input type="text" class="form-control" id="insertResponsavel" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="insertData" class="col-sm-4 col-form-label">Data limite:</label>
+							<div class="col-sm-8">
+							  <input type="date" class="form-control" id="insertData" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-sm-12">
+								<textarea class="form-control" id="insertDesc" placeholder="Descrição da tarefa"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<span style="display: none; margin-right: auto;" id="mensagemLoadingInsert">Inserindo...</span>
+			  <button type="button" class="btn btn-primary" onclick="inserirTarefa()">Inserir</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
 <script type="text/javascript" src="main.js"></script>
 </body>
 </html>

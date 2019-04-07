@@ -19,6 +19,29 @@ async function consultarServidor() {
 	renderizar(dados);
 }
 
+async function inserirTarefa() {
+	let dados = {
+		'nomeProjeto': $('#insertNomeProjeto').val(),
+		'dataLimite': $('#insertData').val().split('-').reverse().join('/'),
+		'titulo': $('#insertTituloTarefa').val(),
+		'descricao': $('#insertDesc').val(),
+		'responsavel': $('#insertResponsavel').val()
+	};
+
+	$('#mensagemLoadingInsert').css('display', 'inline');
+
+	try {
+		let r = await fetch(serverUrl, { method: "POST",	body: JSON.stringify(dados) });
+	} catch(err) {
+		/* empty */
+	}
+
+	$('#mensagemLoadingInsert').css('display', 'none');
+	$('#criarModal').modal('hide')
+
+	consultarServidor();
+}
+
 function renderizarLoading() {
 	$('#root').empty();
 	let loadingText = document.createElement("h1");
