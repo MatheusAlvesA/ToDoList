@@ -1,29 +1,43 @@
-var data = [{
-	'nomeProjeto': 'ProjetoA',
-	'tarefas': [{
-		'dataLimite': '08/04/2018',
-		'titulo': 'Tarefa 1',
-		'descricao': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-		'responsavel': 'Matheus Alves',
-		'status': 'afazer'
-	},{
-		'dataLimite': '09/04/2018',
-		'titulo': 'Tarefa 2',
-		'descricao': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-		'responsavel': 'Enzo Gabriel',
-		'status': 'fazendo'
-	},{
-		'dataLimite': '10/04/2018',
-		'titulo': 'Tarefa 3',
-		'descricao': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-		'responsavel': 'Julia Souza',
-		'status': 'feito'
-	}]
-}];
+var serverUrl = 'http://localhost/api.php'
 
-renderizar(data);
+consultarServidor();
+
+async function consultarServidor() {
+	renderizarLoading();
+	let dados = [];
+	try {
+		let r = await fetch(serverUrl);
+		if(!r.ok) {
+			renderizarErro('Falha interna no servidor');
+			return;
+		}
+		dados = await r.json();
+	} catch(err) {
+		renderizarErro('Falha na conexão com o servidor');
+		return;
+	}
+	renderizar(dados);
+}
+
+function renderizarLoading() {
+	$('#root').empty();
+	let loadingText = document.createElement("h1");
+	loadingText.innerText = 'Loading...';
+	$('#root')[0].appendChild(loadingText);
+}
+
+function renderizarErro(mensagem) {
+	$('#root').empty();
+	let erroTitle = document.createElement("h4");
+	let erroText = document.createElement("p");
+	erroTitle.innerText = 'Erro';
+	erroText.innerText = mensagem;
+	$('#root')[0].appendChild(erroTitle);
+	$('#root')[0].appendChild(erroText);
+}
 
 function renderizar(dados) {
+	$('#root').empty();
 	for(let i = 0; i < dados.length; i++)
 	$('#root')[0].appendChild(gerarProjetoDOM(dados[i]));
 }
