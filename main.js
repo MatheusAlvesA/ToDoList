@@ -4,13 +4,29 @@ var data = [{
 		'dataLimite': '08/04/2018',
 		'titulo': 'Tarefa 1',
 		'descricao': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
-		'responsavel': 'Matheus Alves'
+		'responsavel': 'Matheus Alves',
+		'status': 'afazer'
+	},{
+		'dataLimite': '09/04/2018',
+		'titulo': 'Tarefa 2',
+		'descricao': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+		'responsavel': 'Enzo Gabriel',
+		'status': 'fazendo'
+	},{
+		'dataLimite': '10/04/2018',
+		'titulo': 'Tarefa 3',
+		'descricao': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
+		'responsavel': 'Julia Souza',
+		'status': 'feito'
 	}]
 }];
 
-let dom = gerarProjetoDOM(data[0]);
+renderizar(data);
 
-$('#root')[0].appendChild(dom);
+function renderizar(dados) {
+	for(let i = 0; i < dados.length; i++)
+	$('#root')[0].appendChild(gerarProjetoDOM(dados[i]));
+}
 
 function gerarProjetoDOM(infos) {
 	let containerProjeto = document.createElement("div");
@@ -21,16 +37,23 @@ function gerarProjetoDOM(infos) {
 	tituloProjeto.innerText = infos.nomeProjeto;
 	containerProjeto.appendChild(tituloProjeto);
 
+	let containerTarefas = document.createElement("div");
+	containerTarefas.className = 'containerTarefas';
 	for(let i = 0; i < infos.tarefas.length; i++) {
-		containerProjeto.appendChild(gerarTarefaDOM(infos.tarefas[i]));
+		containerTarefas.appendChild(gerarTarefaDOM(infos.tarefas[i]));
 	}
+	containerProjeto.appendChild(containerTarefas);
 
 	return containerProjeto;
 }
 
 function gerarTarefaDOM(infos) {
 	let containerTarefa = document.createElement("div");
-	containerTarefa.className = 'card text-white bg-primary mb-3 containerTarefa';
+	let classeCor = '';
+	if(infos.status === 'afazer') classeCor = 'bg-danger';
+	else if(infos.status === 'feito') classeCor = 'bg-secondary';
+	else classeCor = 'bg-info';
+	containerTarefa.className = 'card text-white '+classeCor+' mb-3 containerTarefa';
 
 	let containerCardHead = document.createElement("div");
 	containerCardHead.className = 'card-header';
