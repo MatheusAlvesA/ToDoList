@@ -10,6 +10,7 @@ consultarServidor();
 async function consultarServidor() {
 	renderizarLoading();
 	let dados = [];
+
 	try {
 		let r = await fetch(serverUrl);
 		if(!r.ok) {
@@ -21,7 +22,43 @@ async function consultarServidor() {
 		renderizarErro('Falha na conexão com o servidor');
 		return;
 	}
+
+	dados = ordernarDados(dados);
+
 	renderizar(dados);
+}
+
+function ordernarDados(dados) {
+	for(let i = 0; i < dados.length; i++) {
+		dados[i]['tarefas'].sort((a, b) => {
+			let x,y = 0;
+			switch(a.status) {
+				case 'afazer':
+					x = 0;
+				break;
+				case 'fazendo':
+					x = 1;
+				break;
+				default:
+					x = 2;
+				break;
+			}
+			switch(b.status) {
+				case 'afazer':
+					y = 0;
+				break;
+				case 'fazendo':
+					y = 1;
+				break;
+				default:
+					y = 2;
+				break;
+			}
+
+			return x-y;
+		});
+	}
+	return dados;
 }
 
 /*
