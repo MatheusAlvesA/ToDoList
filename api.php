@@ -32,10 +32,10 @@
 		$entrada = json_decode( file_get_contents('php://input'), true );
 		$index = projetoExiste($entrada['nomeProjeto'], $dados);
 
-		if($index === -1) { // Esse é um novo projeto
+		if($index === -1) {
 			http_response_code(404);
 			exit;
-		} else { // Esse projeto já existe
+		} else {
 			$iTarefa = tarefaExiste($entrada['oldTitulo'], $dados[$index]['tarefas']);
 			if($iTarefa === -1) {
 				http_response_code(404);
@@ -46,6 +46,24 @@
 			unset($dados[$index]['tarefas'][$iTarefa]);
 			array_push($dados[$index]['tarefas'], $entrada);
 			$dados[$index]['tarefas'] = array_values($dados[$index]['tarefas']);
+			file_put_contents('dados.json', json_encode($dados));
+		}
+	} else if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+		$index = projetoExiste($_GET['nomeProjeto'], $dados);
+
+		if($index === -1) {
+			http_response_code(404);
+			exit;
+		} else {
+			$iTarefa = tarefaExiste($_GET['titulo'], $dados[$index]['tarefas']);
+			if($iTarefa === -1) {
+				http_response_code(404);
+				exit;
+			}
+
+			unset($dados[$index]['tarefas'][$iTarefa]);
+			$dados[$index]['tarefas'] = array_values($dados[$index]['tarefas']);
+
 			file_put_contents('dados.json', json_encode($dados));
 		}
 	}

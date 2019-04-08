@@ -20,6 +20,27 @@ async function consultarServidor() {
 	renderizar(dados);
 }
 
+async function apagarTarefa() {
+	try {
+		await fetch(serverUrl+'?nomeProjeto='+$('#editNomeProjeto')[0].innerText+
+								'&titulo='+cacheOldTitulo,
+		{ method: "DELETE" });
+	} catch(err) {
+		/* empty */
+	}
+
+	$('#mensagemLoadingedit').css('display', 'none');
+	$('#editarModal').modal('hide')
+
+	$('#editNomeProjeto')[0].innerText = '',
+	$('#editData').val(''),
+	$('#editTituloTarefa').val(''),
+	$('#editDesc').val(''),
+	$('#editResponsavel').val('')
+
+	consultarServidor();
+}
+
 async function editarTarefa() {
 	let dados = {
 		'nomeProjeto': $('#editNomeProjeto')[0].innerText,
@@ -34,7 +55,7 @@ async function editarTarefa() {
 	$('#mensagemLoadingedit').css('display', 'inline');
 
 	try {
-		let r = await fetch(serverUrl, { method: "PUT", body: JSON.stringify(dados) });
+		await fetch(serverUrl, { method: "PUT", body: JSON.stringify(dados) });
 	} catch(err) {
 		/* empty */
 	}
