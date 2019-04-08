@@ -3,27 +3,41 @@
 	header('Content-Type: application/json');
 	header('Access-Control-Allow-Origin: *');
 
-	echo '[{
-		"nomeProjeto": "ProjetoA",
-		"tarefas": [{
-			"dataLimite": "08/04/2018",
-			"titulo": "Tarefa 1",
-			"descricao": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-			"responsavel": "Matheus Alves",
-			"status": "afazer"
-		},{
-			"dataLimite": "09/04/2018",
-			"titulo": "Tarefa 2",
-			"descricao": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-			"responsavel": "Enzo Gabriel",
-			"status": "fazendo"
-		},{
-			"dataLimite": "10/04/2018",
-			"titulo": "Tarefa 3",
-			"descricao": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-			"responsavel": "Julia Souza",
-			"status": "feito"
-		}]
-	}]';
+	$dados = json_decode(file_get_contents('dados.json'), true);
+ 
+	if($_SERVER['REQUEST_METHOD'] === 'GET') {
+		echo json_encode($dados);
+		exit;
+	} else if($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$entrada = json_decode( file_get_contents('php://input'), true );
+		$index = projetoExiste($entrada['nomeProjeto'], $dados);
+
+		if($index === -1) { // Esse é um novo projeto
+			$novo = ['nomeProjeto' => $entrada['nomeProjeto'], 'tarefas' => []];
+
+			unset($entrada['nomeProjeto']);
+			$entrada['status'] = 'afazer';
+			array_push($novo['tarefas'], $entrada);
+
+			array_push($dados, $novo);
+
+		} else { // Esse projeto já existe
+			unset($entrada['nomeProjeto']);
+			$entrada['status'] = 'afazer';
+			array_push($dados[$index]['tarefas'], $entrada);
+		}
+
+		file_put_contents('dados.json', json_encode($dados));
+	}
+
+
+	function projetoExiste($nome, $dados) {
+		for($i = 0; $i < count($dados); $i++) {
+			if($dados[$i]['nomeProjeto'] === $nome) {
+				return $i;
+			}
+		}
+		return -1;
+	}
 
 ?>

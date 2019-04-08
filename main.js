@@ -1,4 +1,4 @@
-var serverUrl = 'https://todolistweb1.herokuapp.com/api.php'
+var serverUrl = 'http://localhost/api.php';//'https://todolistweb1.herokuapp.com/api.php'
 
 consultarServidor();
 
@@ -38,6 +38,12 @@ async function inserirTarefa() {
 
 	$('#mensagemLoadingInsert').css('display', 'none');
 	$('#criarModal').modal('hide')
+
+	$('#insertNomeProjeto').val(''),
+	$('#insertData').val(''),
+	$('#insertTituloTarefa').val(''),
+	$('#insertDesc').val(''),
+	$('#insertResponsavel').val('')
 
 	consultarServidor();
 }
