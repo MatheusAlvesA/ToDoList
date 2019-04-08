@@ -1,4 +1,5 @@
-var serverUrl = 'https://todolistweb1.herokuapp.com/api.php';
+var serverUrl = 'http://localhost/api.php';//'https://todolistweb1.herokuapp.com/api.php';
+var cacheOldTitulo = '';
 
 consultarServidor();
 
@@ -19,6 +20,37 @@ async function consultarServidor() {
 	renderizar(dados);
 }
 
+async function editarTarefa() {
+	let dados = {
+		'nomeProjeto': $('#editNomeProjeto')[0].innerText,
+		'dataLimite': $('#editData').val().split('-').reverse().join('/'),
+		'titulo': $('#editTituloTarefa').val(),
+		'oldTitulo': cacheOldTitulo,
+		'descricao': $('#editDesc').val(),
+		'responsavel': $('#editResponsavel').val(),
+		'status': $('input[name=status]:checked', '#formEditar').val()
+	};
+
+	$('#mensagemLoadingedit').css('display', 'inline');
+
+	try {
+		let r = await fetch(serverUrl, { method: "PUT", body: JSON.stringify(dados) });
+	} catch(err) {
+		/* empty */
+	}
+
+	$('#mensagemLoadingedit').css('display', 'none');
+	$('#editarModal').modal('hide')
+
+	$('#editNomeProjeto')[0].innerText = '',
+	$('#editData').val(''),
+	$('#editTituloTarefa').val(''),
+	$('#editDesc').val(''),
+	$('#editResponsavel').val('')
+
+	consultarServidor();
+}
+
 async function inserirTarefa() {
 	let dados = {
 		'nomeProjeto': $('#insertNomeProjeto').val(),
@@ -37,15 +69,27 @@ async function inserirTarefa() {
 	}
 
 	$('#mensagemLoadingInsert').css('display', 'none');
-	$('#criarModal').modal('hide')
+	$('#criarModal').modal('hide');
 
-	$('#insertNomeProjeto').val(''),
-	$('#insertData').val(''),
-	$('#insertTituloTarefa').val(''),
-	$('#insertDesc').val(''),
-	$('#insertResponsavel').val('')
+	$('#insertNomeProjeto').val('');
+	$('#insertData').val('');
+	$('#insertTituloTarefa').val('');
+	$('#insertDesc').val('');
+	$('#insertResponsavel').val('');
 
 	consultarServidor();
+}
+
+function openEditar(infos) {
+	$('#editNomeProjeto')[0].innerText = infos.nomeProjeto;
+	$('#editData').val(infos.dataLimite.split('/').reverse().join('-'));
+	$('#editTituloTarefa').val(infos.titulo);
+	$('#editDesc').val(infos.descricao);
+	$('#editResponsavel').val(infos.responsavel);
+	$('input[name=status][value='+infos.status+']').prop("checked",true);
+
+	cacheOldTitulo = infos.titulo;
+	$('#editarModal').modal('show');
 }
 
 function renderizarLoading() {
@@ -83,14 +127,14 @@ function gerarProjetoDOM(infos) {
 	let containerTarefas = document.createElement("div");
 	containerTarefas.className = 'containerTarefas';
 	for(let i = 0; i < infos.tarefas.length; i++) {
-		containerTarefas.appendChild(gerarTarefaDOM(infos.tarefas[i]));
+		containerTarefas.appendChild(gerarTarefaDOM(infos.tarefas[i], infos.nomeProjeto));
 	}
 	containerProjeto.appendChild(containerTarefas);
 
 	return containerProjeto;
 }
 
-function gerarTarefaDOM(infos) {
+function gerarTarefaDOM(infos, nomeProjeto) {
 	let containerTarefa = document.createElement("div");
 	let classeCor = '';
 	if(infos.status === 'afazer') classeCor = 'bg-danger';
@@ -100,7 +144,9 @@ function gerarTarefaDOM(infos) {
 
 	let containerCardHead = document.createElement("div");
 	containerCardHead.className = 'card-header';
+	containerCardHead.style = 'cursor: pointer';
 	containerCardHead.innerText = infos.dataLimite;
+	containerCardHead.onclick = () => openEditar(Object.assign(infos, {nomeProjeto: nomeProjeto}));
 	containerTarefa.appendChild(containerCardHead);
 
 	let containerCardBody = document.createElement("div");

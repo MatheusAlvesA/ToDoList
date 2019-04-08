@@ -28,8 +28,36 @@
 		}
 
 		file_put_contents('dados.json', json_encode($dados));
+	} else if($_SERVER['REQUEST_METHOD'] === 'PUT') {
+		$entrada = json_decode( file_get_contents('php://input'), true );
+		$index = projetoExiste($entrada['nomeProjeto'], $dados);
+
+		if($index === -1) { // Esse é um novo projeto
+			http_response_code(404);
+			exit;
+		} else { // Esse projeto já existe
+			$iTarefa = tarefaExiste($entrada['oldTitulo'], $dados[$index]['tarefas']);
+			if($iTarefa === -1) {
+				http_response_code(404);
+				exit;
+			}
+			unset($entrada['nomeProjeto']);
+			unset($entrada['oldTitulo']);
+			unset($dados[$index]['tarefas'][$iTarefa]);
+			array_push($dados[$index]['tarefas'], $entrada);
+			$dados[$index]['tarefas'] = array_values($dados[$index]['tarefas']);
+			file_put_contents('dados.json', json_encode($dados));
+		}
 	}
 
+	function tarefaExiste($nome, $tarefas) {
+		for($i = 0; $i < count($tarefas); $i++) {
+			if($tarefas[$i]['titulo'] === $nome) {
+				return $i;
+			}
+		}
+		return -1;
+	}
 
 	function projetoExiste($nome, $dados) {
 		for($i = 0; $i < count($dados); $i++) {
