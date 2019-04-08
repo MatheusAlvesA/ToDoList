@@ -51,6 +51,7 @@
 			unset($dados[$index]['tarefas'][$iTarefa]);
 			array_push($dados[$index]['tarefas'], $entrada);
 			$dados[$index]['tarefas'] = array_values($dados[$index]['tarefas']);
+
 			file_put_contents('dados.json', json_encode($dados));
 		}
 	} else if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
@@ -68,6 +69,10 @@
 
 			unset($dados[$index]['tarefas'][$iTarefa]);
 			$dados[$index]['tarefas'] = array_values($dados[$index]['tarefas']);
+			// Se esse projeto não possue mais tarefas
+			if(count($dados[$index]['tarefas']) <= 0) {
+				unset($dados[$index]); // Delete ele
+			}
 
 			file_put_contents('dados.json', json_encode($dados));
 		}
