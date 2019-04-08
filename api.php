@@ -22,6 +22,11 @@
 			array_push($dados, $novo);
 
 		} else { // Esse projeto já existe
+			// Se o nome da tarefa já está sendo usado
+			if(tarefaExiste($entrada['titulo'], $dados[$index]['tarefas']) !== -1) {
+				http_response_code(400); // Bad Request
+				exit;
+			}
 			unset($entrada['nomeProjeto']);
 			$entrada['status'] = 'afazer';
 			array_push($dados[$index]['tarefas'], $entrada);

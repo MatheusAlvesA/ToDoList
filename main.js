@@ -1,4 +1,4 @@
-var serverUrl = 'https://todolistweb1.herokuapp.com/api.php';
+var serverUrl = '/api.php';
 var cacheOldTitulo = '';
 
 consultarServidor();
@@ -72,6 +72,17 @@ async function editarTarefa() {
 	consultarServidor();
 }
 
+function avisarErroAoInserir() {
+	$('#mensagemLoadingInsert').css('display', 'none');
+	$('#mensagemErroInsert').css('display', 'inline');
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			$('#mensagemErroInsert').css('display', 'none');
+			resolve();
+		}, 2000);
+	});
+}
+
 async function inserirTarefa() {
 	let dados = {
 		'nomeProjeto': $('#insertNomeProjeto').val(),
@@ -84,21 +95,24 @@ async function inserirTarefa() {
 	$('#mensagemLoadingInsert').css('display', 'inline');
 
 	try {
-		let r = await fetch(serverUrl, { method: "POST",	body: JSON.stringify(dados) });
+		let r = await fetch(serverUrl, { method: "POST", body: JSON.stringify(dados) });
+		if(!r.ok) {
+			await avisarErroAoInserir();
+		}
 	} catch(err) {
-		/* empty */
+		await avisarErroAoInserir();
+	} finally {
+		$('#mensagemLoadingInsert').css('display', 'none');
+		$('#criarModal').modal('hide');
+	
+		$('#insertNomeProjeto').val('');
+		$('#insertData').val('');
+		$('#insertTituloTarefa').val('');
+		$('#insertDesc').val('');
+		$('#insertResponsavel').val('');
+	
+		consultarServidor();
 	}
-
-	$('#mensagemLoadingInsert').css('display', 'none');
-	$('#criarModal').modal('hide');
-
-	$('#insertNomeProjeto').val('');
-	$('#insertData').val('');
-	$('#insertTituloTarefa').val('');
-	$('#insertDesc').val('');
-	$('#insertResponsavel').val('');
-
-	consultarServidor();
 }
 
 function openEditar(infos) {

@@ -85,8 +85,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<span style="display: none; margin-right: auto;" id="mensagemLoadingedit">Inserindo...</span>
 					<button type="button" class="btn btn-danger mr-auto" onclick="apagarTarefa()">Deletar</button>
+					<span style="display: none; margin-right: auto;" id="mensagemLoadingedit">Salvando...</span>
 					<button type="button" class="btn btn-primary" onclick="editarTarefa()">Salvar</button>
 				</div>
 			  </div>
@@ -138,8 +138,9 @@
 				</div>
 			</div>
 			<div class="modal-footer">
+				<span style="display: none; margin-right: auto;" id="mensagemErroInsert">Falha ao inserir, verifique os dados</span>
 				<span style="display: none; margin-right: auto;" id="mensagemLoadingInsert">Inserindo...</span>
-			  <button type="button" class="btn btn-primary" onclick="inserirTarefa()">Inserir</button>
+				<button type="button" class="btn btn-primary" onclick="inserirTarefa()">Inserir</button>
 			</div>
 		  </div>
 		</div>
