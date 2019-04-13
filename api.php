@@ -3,6 +3,13 @@
 	header('Content-Type: application/json');
 	header('Access-Control-Allow-Origin: *');
 
+	session_start();
+	if($_SESSION['logado'] !== 'S') {
+		session_destroy();
+		http_response_code(403); // Acesso Negado
+		exit;
+	}
+
 	$dados = json_decode(file_get_contents('dados.json'), true);
  
 	if($_SERVER['REQUEST_METHOD'] === 'GET') {

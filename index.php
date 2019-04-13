@@ -1,3 +1,12 @@
+<?php
+	session_start();
+	if($_SESSION['logado'] !== 'S') {
+		session_destroy();
+		header('location: login.php');
+		exit;
+	}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,12 +23,22 @@
 <body>
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <b class="navbar-brand">Todo List</b>
-       <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-        	<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#criarModal">Nova tarefa</button>
-        </li>
-       </ul>
+	  <b class="navbar-brand">Todo List</b>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item active">
+					<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#criarModal">Nova tarefa</button>
+				</li>
+				<li class="nav-item" style="margin-left: 5px">
+					<a href="logout.php">
+						<button type="button" class="btn btn-outline-secondary">Logout</button>
+					</a>
+				</li>
+			</ul>
+		</div>
     </nav>
 
     <main role="main" class="container-fluid">
