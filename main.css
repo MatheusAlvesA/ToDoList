@@ -1,5 +1,5 @@
 body {
-	padding-top: 5rem;
+	padding-top: 3rem;
 }
 
 .nomeProjeto {
@@ -30,4 +30,11 @@ body {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
+}
+
+#containerGeralLogin {
+	height: calc(100vh - 3rem);
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
 }
