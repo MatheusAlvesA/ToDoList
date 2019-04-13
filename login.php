@@ -1,27 +1,70 @@
 <?php
+$head_login = ' active';
+$container_login = ' show active';
+$head_cadastro = '';
+$container_cadastro = '';
+
 $user_invalido = '';
 $senha_invalida = '';
 $user_or_pass_error = 'none;';
+$pass_not_equal = 'none;';
+
+$user_invalido_cadastro = '';
+$senha_invalida_cadastro = '';
+$user_or_pass_error = 'none;';
+$pass_not_equal = 'none;';
+$user_existe = 'none;';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$r = checarLogin();
-	switch($r) {
-		case 1: // login inválido
-			$user_invalido = ' is-invalid';
-		break;
-		case 2: // senha inválida
-			$senha_invalida = ' is-invalid';
-		break;
-		case 3: // user ou senha não existe no banco
-			$user_or_pass_error = 'block;';
-		break;
-		default:
-			session_start();
-			$_SESSION['logado'] = 'S';
-			header('location: index.php');
-			exit;
-		break;
+	if(array_key_exists('cadastro', $_GET)) {
 
+		$head_login = '';
+		$container_login = '';
+		$head_cadastro = ' active';
+		$container_cadastro = ' show active';
+
+		$r = cadastrar_usuario();
+		switch($r) {
+			case 1: // login inválido
+				$user_invalido_cadastro = ' is-invalid';
+			break;
+			case 2: // senha inválida
+				$senha_invalida_cadastro = ' is-invalid';
+			break;
+			case 3: // a senhas não conferem
+				$pass_not_equal = 'block;';
+			break;
+			case 4: // usuário já existe
+				$user_existe = 'block;';
+			break;
+			default:
+				session_start();
+				$_SESSION['logado'] = 'S';
+				header('location: index.php');
+			break;
+	
+		}
+
+	} else {
+		$r = checarLogin();
+		switch($r) {
+			case 1: // login inválido
+				$user_invalido = ' is-invalid';
+			break;
+			case 2: // senha inválida
+				$senha_invalida = ' is-invalid';
+			break;
+			case 3: // user ou senha não existe no banco
+				$user_or_pass_error = 'block;';
+			break;
+			default:
+				session_start();
+				$_SESSION['logado'] = 'S';
+				header('location: index.php');
+				exit;
+			break;
+
+		}
 	}
 }
 
@@ -48,47 +91,102 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <main role="main" class="container-fluid">
 
-      <div class="row">
+    <div class="row">
       	<div class="col-12 col-md-4 offset-md-4" id="containerGeralLogin">
 
 		<div class="card" id="cardLogin">
 			<div class="card-header">
-				Faça Login
+
+				<ul class="nav nav-tabs card-header-tabs">
+				<li class="nav-item">
+					<a class="nav-link<?php echo $head_login;?>" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link<?php echo $head_cadastro;?>" data-toggle="tab" href="#cadastro" role="tab" aria-controls="cadastro" aria-selected="false">Cadastro</a>
+				</li>
+				</ul>
+
 			</div>
+
 			<div class="card-body">
-				<form action="/login.php" method="post">
-					<div class="form-group">
-						<label for="nameLogin">Nome de usuário</label>
-						<input type="text"
-								class="form-control<?php echo $user_invalido;?>"
-								id="nameLogin"
-								name="nameLogin"
-								placeholder="Insira o Nome de usuário"
-						/>
-						<div class="invalid-feedback">
-							Nome de usuário inválido
-						</div>
+
+				<div class="tab-content">
+					<div class="tab-pane fade<?php echo $container_login;?>" id="login" role="tabpanel" aria-labelledby="login-tab">
+						<form action="/login.php" method="post">
+							<div class="form-group">
+								<label for="nameLogin">Nome de usuário</label>
+								<input type="text"
+										class="form-control<?php echo $user_invalido;?>"
+										id="nameLogin"
+										name="nameLogin"
+										placeholder="Insira o Nome de usuário"
+								/>
+								<div class="invalid-feedback">
+									Nome de usuário inválido
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="senhaLogin">Senha</label>
+								<input type="password"
+										class="form-control<?php echo $senha_invalida;?>"
+										id="senhaLogin"
+										name="senhaLogin"
+										placeholder="Insira a Senha"
+								/>
+								<div class="invalid-feedback">
+									Senha inválida
+								</div>
+							</div>
+							<p style="color: red; display: <?php echo $user_or_pass_error;?>">Usuário ou senha incorretos!</p>
+							<button type="submit" class="btn btn-primary">Logar</button>
+						</form>
 					</div>
-					<div class="form-group">
-						<label for="senhaLogin">Senha</label>
-						<input type="password"
-								class="form-control<?php echo $senha_invalida;?>"
-								id="senhaLogin"
-								name="senhaLogin"
-								placeholder="Insira a Senha"
-						/>
-						<div class="invalid-feedback">
-							Senha inválida
-						</div>
+					<div class="tab-pane fade<?php echo $container_cadastro;?>" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
+						<form action="/login.php?cadastro" method="post">
+							<div class="form-group">
+								<label for="nome">Nome de usuário</label>
+								<input type="text"
+										class="form-control<?php echo $user_invalido_cadastro;?>"
+										id="nome"
+										name="nome"
+										placeholder="Insira o Nome de usuário"
+								/>
+								<div class="invalid-feedback">
+									Nome de usuário inválido
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="senha">Senha</label>
+								<input type="password"
+										class="form-control<?php echo $senha_invalida_cadastro;?>"
+										id="senha"
+										name="senha"
+										placeholder="Insira a Senha"
+								/>
+								<div class="invalid-feedback">
+									Senha inválida
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="senhaConfirm">Confirme a senha</label>
+								<input type="password"
+										class="form-control"
+										id="senhaConfirm"
+										name="senhaConfirm"
+										placeholder="Repita a senha"
+								/>
+							</div>
+							<p style="color: red; display: <?php echo $pass_not_equal;?>">As senhas não conferem!</p>
+							<p style="color: red; display: <?php echo $user_existe;?>">Este nome de usuário já está sendo usado!</p>
+							<button type="submit" class="btn btn-primary">Cadastrar-se</button>
+						</form>
 					</div>
-					<p style="color: red; display: <?php echo $user_or_pass_error;?>">Usuário ou senha incorretos!</p>
-					<button type="submit" class="btn btn-primary">Logar</button>
-				</form>
+				</div>
+
 			</div>
 		</div>
 
-        </div>
-      </div>
+    </div>
 
 	</main>
 
@@ -96,7 +194,41 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>
 
 <?php
-// ZONA DE FUNÇÕES DE LOGIN
+// ZONA DE FUNÇÕES DE LOGIN E CADASTRO
+
+/*
+ Esta função cadastra um novo usuário enviado pelo post
+
+ retorna 0 se o usuário foi cadastrado
+ retorna 1 se o nome é inválido
+ retorna 2 se a senha é inválida
+ retorna 3 se a senha a a confirmação da senha não conferem
+ retorna 4 se o nome de usuário já está sendo usado
+*/
+function cadastrar_usuario() {
+	if(!isset($_POST['nome']) || $_POST['nome'] === '') return 1;
+	if(!isset($_POST['senha']) || $_POST['senha'] === '') return 2;
+	if($_POST['senha'] !== $_POST['senhaConfirm']) return 3;
+
+	$lista = lerListaUsers();
+
+	foreach($lista as $user) {
+		if($user['nome'] === $_POST['nome'])
+			return 4;
+	}
+
+	$new = ['nome' => $_POST['nome'], 'senha' => $_POST['senha']];
+
+	array_push($lista, $new);
+
+	gravarUsers($lista);
+
+	return 0;
+}
+
+function gravarUsers($lista) {
+	return file_put_contents('users.json', json_encode($lista));
+}
 
 function lerListaUsers() {
 	return json_decode(file_get_contents('users.json'), true);
