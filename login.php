@@ -71,7 +71,7 @@
 						</form>
 					</div>
 					<div class="tab-pane fade" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
-						<form>
+						<form id="formCadastro">
 							<div class="form-group">
 								<label for="nome">Nome de usuário</label>
 								<input type="text"
@@ -80,9 +80,6 @@
 										name="nome"
 										placeholder="Insira o Nome de usuário"
 								/>
-								<div class="invalid-feedback">
-									Nome de usuário inválido
-								</div>
 							</div>
 							<div class="form-group">
 								<label for="senha">Senha</label>
@@ -92,9 +89,6 @@
 										name="senha"
 										placeholder="Insira a Senha"
 								/>
-								<div class="invalid-feedback">
-									Senha inválida
-								</div>
 							</div>
 							<div class="form-group">
 								<label for="senhaConfirm">Confirme a senha</label>
@@ -105,8 +99,7 @@
 										placeholder="Repita a senha"
 								/>
 							</div>
-							<p style="color: red; display: none">As senhas não conferem!</p>
-							<p style="color: red; display: none">Este nome de usuário já está sendo usado!</p>
+							<p id="mensagemErroCadastro" style="color: red; display: none"></p>
 							<button type="submit" class="btn btn-primary">Cadastrar-se</button>
 						</form>
 					</div>
