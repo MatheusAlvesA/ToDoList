@@ -77,11 +77,11 @@ async function apagarTarefa() {
 	$('#mensagemLoadingedit').css('display', 'none');
 	$('#editarModal').modal('hide')
 
-	$('#editNomeProjeto')[0].innerText = '',
-	$('#editData').val(''),
-	$('#editTituloTarefa').val(''),
-	$('#editDesc').val(''),
-	$('#editResponsavel').val('')
+	$('#editNomeProjeto')[0].innerText = '';
+	$('#editData').val('');
+	$('#editTituloTarefa').val('');
+	$('#editDesc').val('');
+	$('#editResponsavel').val('');
 
 	consultarServidor();
 }

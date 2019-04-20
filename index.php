@@ -2,7 +2,7 @@
 	session_start();
 	if($_SESSION['logado'] !== 'S') {
 		session_destroy();
-		header('location: login.html');
+		header('location: login.php');
 		exit;
 	}
 ?>

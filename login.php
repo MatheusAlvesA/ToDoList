@@ -1,3 +1,11 @@
+<?php
+	session_start();
+	if($_SESSION['logado'] !== 'S') {
+		session_destroy();
+		header('location: index.php');
+		exit;
+	}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +48,7 @@
 
 				<div class="tab-content">
 					<div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-						<form action="/login.php" method="post">
+						<form id="formLogin" method="post">
 							<div class="form-group">
 								<label for="nameLogin">Nome de usuário</label>
 								<input type="text"
@@ -69,7 +77,7 @@
 							<button type="submit" class="btn btn-primary">Logar</button>
 						</form>
 					</div>
-					<div class="tab-pane fade<?php echo $container_cadastro;?>" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
+					<div class="tab-pane fade" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
 						<form action="/login.php?cadastro" method="post">
 							<div class="form-group">
 								<label for="nome">Nome de usuário</label>
@@ -119,5 +127,6 @@
 
 	</main>
 
+	<script type="text/javascript" src="login.js"></script>
 </body>
 </html>
