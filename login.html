@@ -20,17 +20,17 @@
     <main role="main" class="container-fluid">
 
     <div class="row">
-      	<div class="col-12 col-md-4 offset-md-4" id="containerGeralLogin">
+    <div class="col-12 col-md-4 offset-md-4" id="containerGeralLogin">
 
 		<div class="card" id="cardLogin">
 			<div class="card-header">
 
 				<ul class="nav nav-tabs card-header-tabs">
 				<li class="nav-item">
-					<a class="nav-link<?php echo $head_login;?>" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+					<a class="nav-link active" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link<?php echo $head_cadastro;?>" data-toggle="tab" href="#cadastro" role="tab" aria-controls="cadastro" aria-selected="false">Cadastro</a>
+					<a class="nav-link" data-toggle="tab" href="#cadastro" role="tab" aria-controls="cadastro" aria-selected="false">Cadastro</a>
 				</li>
 				</ul>
 
@@ -39,12 +39,12 @@
 			<div class="card-body">
 
 				<div class="tab-content">
-					<div class="tab-pane fade<?php echo $container_login;?>" id="login" role="tabpanel" aria-labelledby="login-tab">
+					<div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
 						<form action="/login.php" method="post">
 							<div class="form-group">
 								<label for="nameLogin">Nome de usuário</label>
 								<input type="text"
-										class="form-control<?php echo $user_invalido;?>"
+										class="form-control"
 										id="nameLogin"
 										name="nameLogin"
 										placeholder="Insira o Nome de usuário"
@@ -56,7 +56,7 @@
 							<div class="form-group">
 								<label for="senhaLogin">Senha</label>
 								<input type="password"
-										class="form-control<?php echo $senha_invalida;?>"
+										class="form-control"
 										id="senhaLogin"
 										name="senhaLogin"
 										placeholder="Insira a Senha"
@@ -65,7 +65,7 @@
 									Senha inválida
 								</div>
 							</div>
-							<p style="color: red; display: <?php echo $user_or_pass_error;?>">Usuário ou senha incorretos!</p>
+							<p style="color: red; display: none">Usuário ou senha incorretos!</p>
 							<button type="submit" class="btn btn-primary">Logar</button>
 						</form>
 					</div>
@@ -74,7 +74,7 @@
 							<div class="form-group">
 								<label for="nome">Nome de usuário</label>
 								<input type="text"
-										class="form-control<?php echo $user_invalido_cadastro;?>"
+										class="form-control"
 										id="nome"
 										name="nome"
 										placeholder="Insira o Nome de usuário"
@@ -86,7 +86,7 @@
 							<div class="form-group">
 								<label for="senha">Senha</label>
 								<input type="password"
-										class="form-control<?php echo $senha_invalida_cadastro;?>"
+										class="form-control"
 										id="senha"
 										name="senha"
 										placeholder="Insira a Senha"
@@ -104,8 +104,8 @@
 										placeholder="Repita a senha"
 								/>
 							</div>
-							<p style="color: red; display: <?php echo $pass_not_equal;?>">As senhas não conferem!</p>
-							<p style="color: red; display: <?php echo $user_existe;?>">Este nome de usuário já está sendo usado!</p>
+							<p style="color: red; display: none">As senhas não conferem!</p>
+							<p style="color: red; display: none">Este nome de usuário já está sendo usado!</p>
 							<button type="submit" class="btn btn-primary">Cadastrar-se</button>
 						</form>
 					</div>
@@ -114,7 +114,8 @@
 			</div>
 		</div>
 
-    </div>
+	</div>
+	</div>
 
 	</main>
 
