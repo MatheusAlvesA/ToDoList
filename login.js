@@ -13,13 +13,30 @@ async function logar() {
 	let r = null;
 	try {
 		r = await fetch(serverUrl, { method: "POST", body: corpoReq });
-		if(r.ok) {
-			//TODO
+		let json = await r.json();
+		if(json.ok) {
+			window.location = "/index.php";
 		} else {
-			//TODO
+			mostrarMensagemErroLogin(json.erro);
 		}
 	} catch(err) {
-		//TODO
+		mostrarMensagemErroLogin('Falha na conexão com o servidor');
 	}
 
+}
+
+var mostrandoMensagemErroLogin = false;
+function mostrarMensagemErroLogin(mensagem) {
+	if(mostrandoMensagemErroLogin) return false;
+	mostrandoMensagemErroLogin = true;
+
+	$("#mensagemErroLogin").html(mensagem);
+	$("#mensagemErroLogin").css('display', 'block');
+
+	setTimeout(() => { // Mostrando mensagem de erro
+		mostrandoMensagemErroLogin = false;
+		$("#mensagemErroLogin").css('display', 'none');
+	}, 3000); // 3 Segundos
+
+	return true;
 }

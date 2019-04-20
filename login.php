@@ -1,7 +1,6 @@
 <?php
 	session_start();
-	if($_SESSION['logado'] !== 'S') {
-		session_destroy();
+	if($_SESSION['logado'] === 'S') {
 		header('location: index.php');
 		exit;
 	}
@@ -48,7 +47,7 @@
 
 				<div class="tab-content">
 					<div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-						<form id="formLogin" method="post">
+						<form id="formLogin">
 							<div class="form-group">
 								<label for="nameLogin">Nome de usuário</label>
 								<input type="text"
@@ -57,9 +56,6 @@
 										name="nameLogin"
 										placeholder="Insira o Nome de usuário"
 								/>
-								<div class="invalid-feedback">
-									Nome de usuário inválido
-								</div>
 							</div>
 							<div class="form-group">
 								<label for="senhaLogin">Senha</label>
@@ -69,16 +65,13 @@
 										name="senhaLogin"
 										placeholder="Insira a Senha"
 								/>
-								<div class="invalid-feedback">
-									Senha inválida
-								</div>
 							</div>
-							<p style="color: red; display: none">Usuário ou senha incorretos!</p>
+							<p  id='mensagemErroLogin' style="color: red; display: none"></p>
 							<button type="submit" class="btn btn-primary">Logar</button>
 						</form>
 					</div>
 					<div class="tab-pane fade" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
-						<form action="/login.php?cadastro" method="post">
+						<form>
 							<div class="form-group">
 								<label for="nome">Nome de usuário</label>
 								<input type="text"
